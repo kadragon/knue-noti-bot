@@ -8,9 +8,12 @@ def get_gist_content(gist_id):
 
     if response.status_code == 200:
         gist_data = response.json()
-        for file in gist_data['files'].values():
+        content_map = {}
+        for filename, file in gist_data['files'].items():
+            filename = filename.split('.')[0]
             content = file['content']
-            return parse_gist_content(content)
+            content_map[filename] = parse_gist_content(content)
+        return content_map
     else:
         return None
 
@@ -24,13 +27,18 @@ def parse_gist_content(content):
     return data
 
 
-# if __name__ == '__main__':
-#     # Gist ID를 여기에 입력하세요
-#     gist_id = "09b40531d20c143009eedf15b66b0950"
+def update_gist_content(github_token, gist_id, files):
+    url = f"https://api.github.com/gists/{gist_id}"
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "Authorization": f"token {github_token}"
+    }
+    data = {
+        "files": {files}
+    }
+    response = requests.patch(url, headers=headers, data=json.dumps(data))
 
-#     content = get_gist_content(gist_id)
-#     if content:
-#         parsed_data = parse_gist_content(content)
-#         print(json.dumps(parsed_data, indent=2, ensure_ascii=False))
-#     else:
-#         print("Gist를 불러오는 데 실패했습니다.")
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
