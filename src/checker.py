@@ -22,7 +22,7 @@ class Checker:
 
                 for entry in entries:
                     if entry['link'] != recode[idx]:
-                        print(entry['link'], recode[idx])
+                        print(entry)
                     else:
                         break
         if update_flag:

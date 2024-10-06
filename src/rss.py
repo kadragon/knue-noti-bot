@@ -2,6 +2,7 @@ import feedparser
 from bs4 import BeautifulSoup
 import html
 import re
+import warnings
 
 
 class RSSFeedParser:
@@ -27,8 +28,12 @@ class RSSFeedParser:
         for entry in self.feed.entries:
             entry_info = {}  # 각 항목 정보를 저장할 딕셔너리
 
-            # HTML 태그 제거 및 텍스트 정리
-            soup = BeautifulSoup(entry.summary, 'html.parser')
+            # 경고 무시
+            with warnings.catch_warnings():
+                warnings.simplefilter(
+                    "ignore", category=UserWarning)
+                soup = BeautifulSoup(entry.summary, 'lxml')
+
             clean_summary = soup.get_text(separator=' ')
             clean_summary = html.unescape(clean_summary)
             clean_summary = self.remove_html_tags(clean_summary)
