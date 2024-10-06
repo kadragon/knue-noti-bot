@@ -8,6 +8,8 @@ class Checker:
         self.update_data = {}
 
     def update_checker(self, update_flag: bool = False) -> list:
+        new_data = []
+
         for site_id in self.gist_data.keys():
             gist_filename = f'{site_id}.csv'
             self.update_data[gist_filename] = {'content': ''}
@@ -22,8 +24,10 @@ class Checker:
 
                 for entry in entries:
                     if entry['link'] != recode[idx]:
-                        print(entry)
+                        new_data.append(entry)
                     else:
                         break
         if update_flag:
             update_gist_content(self.update_data)
+
+        return new_data
