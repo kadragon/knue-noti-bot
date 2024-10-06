@@ -20,48 +20,37 @@ class RSSFeedParser:
         print(f"피드 제목: {self.feed.feed.title}")
         print(f"피드 설명: {self.feed.feed.description}")
 
-    def parse_last_entry(self):
-        # entries_list = []  # 항목 정보를 저장할 리스트
-        entry = self.feed.entries[0]
+    def parse_entries(self):
+        entries_list = []  # 항목 정보를 저장할 리스트
+        entry = self.feed.entries[:10]
 
-        # for entry in self.feed.entries:
-        entry_info = {}  # 각 항목 정보를 저장할 딕셔너리
+        for entry in self.feed.entries:
+            entry_info = {}  # 각 항목 정보를 저장할 딕셔너리
 
-        # HTML 태그 제거 및 텍스트 정리
-        soup = BeautifulSoup(entry.summary, 'html.parser')
-        clean_summary = soup.get_text(separator=' ')
-        clean_summary = html.unescape(clean_summary)
-        clean_summary = self.remove_html_tags(clean_summary)
+            # HTML 태그 제거 및 텍스트 정리
+            soup = BeautifulSoup(entry.summary, 'html.parser')
+            clean_summary = soup.get_text(separator=' ')
+            clean_summary = html.unescape(clean_summary)
+            clean_summary = self.remove_html_tags(clean_summary)
 
-        # 한글 파일 복사 붙여넣기 방지
-        if clean_summary.find('"t":') > 0:
-            split_clean_summary = clean_summary.split("\n")
-            filtered_text = []
+            # 한글 파일 복사 붙여넣기 방지
+            if clean_summary.find('"t":') > 0:
+                split_clean_summary = clean_summary.split("\n")
+                filtered_text = []
 
-            for txt in split_clean_summary:
-                if txt.startswith('"t"'):
-                    filtered_text.append(txt.replace('"t": "', '')[:-1])
+                for txt in split_clean_summary:
+                    if txt.startswith('"t"'):
+                        filtered_text.append(txt.replace('"t": "', '')[:-1])
 
-            clean_summary = '\n'.join(filtered_text)
+                clean_summary = '\n'.join(filtered_text)
 
-        clean_summary = ' '.join(clean_summary.split())
+            clean_summary = ' '.join(clean_summary.split())
 
-        entry_info['title'] = entry.title
-        entry_info['link'] = entry.link
-        entry_info['summary'] = clean_summary
-        entry_info['published'] = entry.published
+            entry_info['title'] = entry.title
+            entry_info['link'] = entry.link
+            entry_info['summary'] = clean_summary
+            entry_info['published'] = entry.published
 
-        # entries_list.append(entry_info)  # 리스트에 항목 정보 추가
+            entries_list.append(entry_info)  # 리스트에 항목 정보 추가
 
-        return entry_info  # 항목 정보 리스트 반환
-
-
-if __name__ == '__main__':
-    board_idx_list = [25, 26, 11, 207, 28, 256]
-
-    # 사용 예시
-    for board_idx in board_idx_list:
-        parser = RSSFeedParser(board_idx)
-        entry = parser.parse_last_entry()
-
-        print(f'{board_idx},{entry['link']}')
+        return entries_list  # 항목 정보 리스트 반환
