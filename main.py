@@ -1,14 +1,15 @@
 from src.checker import Checker
 from src.llm import request_gpt
+from src.tg import Tg
 
 
 if __name__ == '__main__':
     checker = Checker()
-    new_datas = checker.update_checker(update_flag=False)
+    tg = Tg()
+    new_data_list = checker.update_checker(update_flag=False)
 
     alert_messages = []
 
-    for n_data in new_datas:
-        alert_messages.append(request_gpt(n_data))
-
-    print('\n---\n'.join(alert_messages))
+    for data_item in new_data_list:
+        gpt_message = request_gpt(data_item)
+        tg.send_message_to_group(gpt_message, data_item['link'])
