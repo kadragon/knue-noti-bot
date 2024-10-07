@@ -1,12 +1,11 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
-from datetime import datetime
 
 
 def request_gpt(input_text, model="gpt-4o-mini"):
     llm = ChatOpenAI(
         model=model,
-        temperature=0.1,
+        temperature=0.2,
         max_retries=2,
     )
 
@@ -25,7 +24,15 @@ def request_gpt(input_text, model="gpt-4o-mini"):
 - 요약은 100~200자 내외로 작성하여 학생들이 쉽게 이해할 수 있도록 하세요.
 - 간결하고 친근한 어조로 작성하여 메시지가 학생들에게 자연스럽게 전달되도록 합니다.
 - 일정은 시간이 포함되지 않을 경우 YYYY-MM-DD 형식으로 작성하고, 시간이 포함될 경우 YYYY-MM-DD HH:mm 형식으로 작성합니다.
-- 마크다운 형식을 사용하지 마세요.
+
+중요: 반드시 Telegram의 HTML 스타일을 사용하여 메시지를 작성해야 합니다. 다음 구문을 정확히 사용하세요:
+- <b>bold</b>, <strong>bold</strong>
+- <i>italic</i>, <em>italic</em>
+- <u>underline</u>, <ins>underline</ins>
+- <a href="http://www.example.com/">inline URL</a>
+- <code>inline fixed-width code</code>
+- <pre>pre-formatted fixed-width code block</pre>
+- <blockquote>Block quotation started\nBlock quotation continued\nThe last line of the block quotation</blockquote>
 """),
             ("human", """
 요약할 내용
@@ -44,8 +51,7 @@ def request_gpt(input_text, model="gpt-4o-mini"):
 {res_text}
 
 🤖 이 요약은 AI에 의해 작성되었습니다.
-    """
-
+"""
     except Exception as e:
         # 예외 처리
         return f"오류가 발생했습니다: {str(e)}"

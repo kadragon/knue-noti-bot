@@ -1,17 +1,11 @@
 import telebot
-import os
-from dotenv import load_dotenv
 from telebot.types import LinkPreviewOptions
-
-load_dotenv()
-
-API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
-CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+from config import TELEGRAM_API_TOKEN, TELEGRAM_CHAT_ID
 
 
 class Tg:
     def __init__(self):
-        self.bot = telebot.TeleBot(API_TOKEN)
+        self.bot = telebot.TeleBot(TELEGRAM_API_TOKEN)
 
     def _make_link_options(self, link):
         return LinkPreviewOptions(
@@ -24,4 +18,4 @@ class Tg:
 
     def send_message_to_group(self, message, link):
         self.bot.send_message(
-            CHAT_ID, message, link_preview_options=self._make_link_options(link))
+            TELEGRAM_CHAT_ID, message, parse_mode='HTML', link_preview_options=self._make_link_options(link))
