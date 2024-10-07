@@ -1,0 +1,8 @@
+# dependabot.yml 파일 예시
+
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"  # 패키지 매니페스트가 위치한 디렉토리
+    schedule:
+      interval: "weekly"  # 업데이트 확인 주기
