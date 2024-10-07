@@ -1,4 +1,4 @@
-name: schedule_run
+name: scheduleRun
 
 on:
   schedule:

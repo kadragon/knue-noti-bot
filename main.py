@@ -6,7 +6,7 @@ from src.tg import Tg
 if __name__ == '__main__':
     checker = Checker()
     tg = Tg()
-    new_data_list = checker.update_checker(update_flag=False)
+    new_data_list = checker.update_checker(update_flag=True)
 
     alert_messages = []
 
