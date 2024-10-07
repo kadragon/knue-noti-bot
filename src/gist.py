@@ -1,6 +1,5 @@
 import requests
-import json
-from config import RECODE_GIST_ID, GITHUB_TOKEN
+from config import RECODE_GIST_ID, GIT_HUB_TOKEN
 
 
 def get_gist_content():
@@ -32,7 +31,7 @@ def update_gist_content(files):
     url = f"https://api.github.com/gists/{RECODE_GIST_ID}"
     headers = {
         "Accept": "application/vnd.github.v3+json",
-        "Authorization": f"token {GITHUB_TOKEN}"
+        "Authorization": f"token {GIT_HUB_TOKEN}"
     }
     data = {
         "files": files
