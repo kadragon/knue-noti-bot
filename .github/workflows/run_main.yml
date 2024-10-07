@@ -2,7 +2,7 @@ name: scheduleRun
 
 on:
   schedule:
-    - cron: "0 9-18 * * 1-5" # 매주 월-금, 09:00부터 18:00까지 매 정시
+    - cron: "0 0-9 * * 1-5" # KST 9시부터 18시까지에 해당하는 UTC 시간 0시부터 9시까지
 
 jobs:
   run:
