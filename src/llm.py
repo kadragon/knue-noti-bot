@@ -49,8 +49,6 @@ def request_gpt(input_text, model="gpt-4o-mini"):
 
         return f"""
 {res_text}
-
-🤖 이 요약은 AI에 의해 작성되었습니다.
 """
     except Exception as e:
         # 예외 처리
