@@ -14,23 +14,19 @@ class TelegramBot:
         except Exception as e:
             raise ValueError(f"Failed to initialize Telegram bot: {e}")
 
-    def send_message_to_group(self, message, link=None):
+    def send_message(self, message, link=None):
         """Send a message to the specified Telegram group."""
         if not message:
             print("메시지가 비어 있습니다.")
-            return  # 메시지가 비어있을 경우 조기 반환
+            return
 
         try:
-            # Properly format the message with the link at the bottom if it exists
-            full_message = (
-                f"""<a href="{link}">🔗 [게시물 바로가기]</a>
+            full_message = f"""<a href="{link}">🔗 [게시물 바로가기]</a>
 
-{message}
+{full_message}
 
 🤖 이 요약은 AI에 의해 작성되었습니다.
 """
-                if link else message
-            )
 
             self.bot.send_message(
                 self.chat_id,
@@ -38,4 +34,4 @@ class TelegramBot:
                 parse_mode='HTML'
             )
         except Exception as e:
-            print(f"Error sending message to Telegram group: {e}")
+            print(f"Error sending message: {e}")

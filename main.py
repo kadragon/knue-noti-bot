@@ -10,4 +10,4 @@ if __name__ == '__main__':
 
     for data in updated_data_list:
         gpt_message = request_gpt(data)
-        telegramBot.send_message_to_group(gpt_message, data['link'])
+        telegramBot.send_message(gpt_message, data['link'])
