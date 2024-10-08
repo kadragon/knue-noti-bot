@@ -1,6 +1,6 @@
 from src.checker import Checker
 from src.llm import request_gpt
-from telegram_bot import TelegramBot
+from src.telegram_bot import TelegramBot
 
 
 if __name__ == '__main__':
