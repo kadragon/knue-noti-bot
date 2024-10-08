@@ -1,10 +1,10 @@
-from src.gist import *
+import src.gist as gist
 from src.rss import RSSFeedParser
 
 
 class Checker:
     def __init__(self) -> None:
-        self.gist_data = get_gist_content()
+        self.gist_data = gist.get_gist_content()
         self.update_data = {}
 
     def update_checker(self, update_flag: bool = False) -> list:
@@ -27,7 +27,8 @@ class Checker:
                         new_data.append(entry)
                     else:
                         break
+
         if update_flag:
-            update_gist_content(self.update_data)
+            gist.update_gist_content(self.update_data)
 
         return new_data
