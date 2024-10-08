@@ -36,13 +36,12 @@ def update_gist_content(files):
     data = {
         "files": files
     }
-    response = requests.patch(url, headers=headers,
-                              json=data)  # data를 json으로 변경
+    response = requests.patch(url, headers=headers, json=data)
 
     print(url)
 
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error: {response.status_code}, {response.text}")  # 에러 메시지 출력
-        return None  # None으로 명시적으로 반환
+        print(f"Error: {response.status_code}, {response.text}")
+        return None
