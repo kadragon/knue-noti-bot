@@ -1,10 +1,11 @@
-import src.gist as gist
+from src.gist import GistManager
 from src.rss import RSSFeedParser
 
 
 class Checker:
     def __init__(self) -> None:
-        self.gist_data = gist.get_gist_content()
+        self.gist_manager = GistManager()
+        self.gist_data = self.gist_manager.get_gist_content()
 
     def update_checker(self, update_flag: bool = False) -> list:
         parser = RSSFeedParser()
@@ -26,7 +27,7 @@ class Checker:
 
                 entries = parser.parse_entries(idx)
 
-                updated_content.append(f'{idx},{entries[0]['link']},{target}')
+                updated_content.append(f"{idx},{entries[0]['link']},{target}")
 
                 for entry in entries:
                     if entry['link'] != latest_article_url:
@@ -36,9 +37,10 @@ class Checker:
                         break
 
             updated_data[gist_filename] = {
-                'content': f"""bbs_no,latest_article_url,notification_target\n{'\n'.join(updated_content)}"""}
+                'content': f"""bbs_no,latest_article_url,notification_target\n{'\n'.join(updated_content)}"""
+            }
 
         if update_flag and is_data_updated:
-            gist.update_gist_content(updated_data)
+            self.gist_manager.update_gist_content(updated_data)
 
         return new_entries

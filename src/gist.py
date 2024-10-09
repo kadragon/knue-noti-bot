@@ -2,48 +2,49 @@ import requests
 from config import RECODE_GIST_ID, GIT_HUB_TOKEN
 
 
-def get_gist_content():
-    url = f"https://api.github.com/gists/{RECODE_GIST_ID}"
-    response = requests.get(url)
+class GistManager:
+    BASE_URL = "https://api.github.com/gists/"
 
-    if response.status_code == 200:
-        gist_data = response.json()
-        content_map = {}
-        for filename, file in gist_data['files'].items():
-            filename = filename.split('.')[0]
-            content = file['content']
-            content_map[filename] = parse_gist_content(content)
-        return content_map
-    else:
-        return None
-
-
-def parse_gist_content(content):
-    lines = content.strip().split('\n')
-    data = {}
-    for line in lines[1:]:
-        key, url, target = line.split(',')
-        data[key] = {
-            'url': url.strip(),
-            'target': target
+    def __init__(self):
+        self.gist_id = RECODE_GIST_ID
+        self.headers = {
+            "Accept": "application/vnd.github.v3+json",
+            "Authorization": f"token {GIT_HUB_TOKEN}"
         }
 
-    return data
+    def get_gist_content(self):
+        response = requests.get(f"{self.BASE_URL}{self.gist_id}")
 
+        if response.status_code == 200:
+            gist_data = response.json()
+            return {
+                filename.split('.')[0]: self.parse_gist_content(
+                    file['content'])
+                for filename, file in gist_data['files'].items()
+            }
+        else:
+            print(f"Error fetching gist: {
+                  response.status_code}, {response.text}")
+            return None
 
-def update_gist_content(files):
-    url = f"https://api.github.com/gists/{RECODE_GIST_ID}"
-    headers = {
-        "Accept": "application/vnd.github.v3+json",
-        "Authorization": f"token {GIT_HUB_TOKEN}"
-    }
-    data = {
-        "files": files
-    }
-    response = requests.patch(url, headers=headers, json=data)
+    @staticmethod
+    def parse_gist_content(content):
+        lines = content.strip().split('\n')
+        return {
+            line.split(',')[0]: {
+                'url': line.split(',')[1].strip(),
+                'target': line.split(',')[2]
+            } for line in lines[1:]
+        }
 
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error: {response.status_code}, {response.text}")
-        return None
+    def update_gist_content(self, files):
+        data = {"files": files}
+        response = requests.patch(
+            f"{self.BASE_URL}{self.gist_id}", headers=self.headers, json=data)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Error updating gist: {
+                  response.status_code}, {response.text}")
+            return None
