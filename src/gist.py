@@ -21,9 +21,13 @@ def get_gist_content():
 def parse_gist_content(content):
     lines = content.strip().split('\n')
     data = {}
-    for line in lines:
-        key, url = line.split(',')
-        data[key] = url.strip()
+    for line in lines[1:]:
+        key, url, target = line.split(',')
+        data[key] = {
+            'url': url.strip(),
+            'target': target
+        }
+
     return data
 
 
@@ -37,8 +41,6 @@ def update_gist_content(files):
         "files": files
     }
     response = requests.patch(url, headers=headers, json=data)
-
-    print(url)
 
     if response.status_code == 200:
         return response.json()
