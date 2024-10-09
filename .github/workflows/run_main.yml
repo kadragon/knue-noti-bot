@@ -34,7 +34,9 @@ jobs:
       - name: Run main.py
         env:
           TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID_1: ${{ secrets.TELEGRAM_CHAT_ID_1 }}
+          TELEGRAM_CHAT_ID_2: ${{ secrets.TELEGRAM_CHAT_ID_2 }}
+          TELEGRAM_CHAT_ID_3: ${{ secrets.TELEGRAM_CHAT_ID_3 }}
           RECODE_GIST_ID: ${{ secrets.RECODE_GIST_ID }}
           GIT_HUB_TOKEN: ${{ secrets.GIT_HUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
