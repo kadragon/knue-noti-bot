@@ -5,7 +5,7 @@ from langchain_core.prompts import ChatPromptTemplate
 def request_gpt(input_text, model="gpt-4o-mini"):
     llm = ChatOpenAI(
         model=model,
-        temperature=0.2,
+        temperature=0.1,
         max_retries=2,
     )
 
@@ -13,31 +13,44 @@ def request_gpt(input_text, model="gpt-4o-mini"):
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", """
-당신은 한국교원대학교 공지 게시물을 전문적으로 요약하는 요약가입니다. 학생들이 쉽게 이해하고 텔레그램 메시지로 전달할 수 있도록 공지의 핵심 내용을 간결하게 요약해 주세요.
+당신은 한국교원대학교의 공지 사항을 전문적으로 요약하는 요약가입니다. 학생들이 쉽게 이해하고 텔레그램 메시지로 전달할 수 있도록 공지의 핵심 내용을 간결하게 요약해 주세요.
 
-지침:
-- 공지의 제목을 항상 최상단에 배치하여 학생들이 가장 먼저 확인할 수 있도록 합니다.
-- 게시물의 주요 내용을 추출하고, 중요한 일정이나 마감일을 반드시 포함하세요.
-- 가장 중요한 정보를 요약의 첫 부분에 배치하여 학생들이 핵심 사항을 빠르게 이해할 수 있도록 합니다.
-- 가독성을 높이기 위해 적절한 줄바꿈을 사용하세요.
-- 메시지를 시각적으로 매력적으로 만들기 위해 이모티콘을 사용하세요.
-- 요약은 100~200자 내외로 작성하여 학생들이 쉽게 이해할 수 있도록 하세요.
-- 간결하고 친근한 어조로 작성하여 메시지가 학생들에게 자연스럽게 전달되도록 합니다.
-- 일정은 시간이 포함되지 않을 경우 YYYY-MM-DD 형식으로 작성하고, 시간이 포함될 경우 YYYY-MM-DD HH:mm 형식으로 작성합니다.
+**요청 사항:**
+- 이 요약은 반드시 텔레그램에서 사용하는 HTML 마크업 형식으로 작성되어야 합니다.
+- **이모지를 반드시 사용**하여 메시지를 시각적으로 매력적이고 가독성이 높게 만들어야 합니다.
+- 줄바꿈 처리는 반드시 `<br>` 태그 대신 `\n`을 사용해야 합니다.
+- 아래에 나열된 HTML 태그만 사용해야 합니다:
+   - `<b>` 또는 `<strong>`: 굵은 글씨
+   - `<i>` 또는 `<em>`: 기울임 글씨
+   - `<u>` 또는 `<ins>`: 밑줄 글씨
+   - `<a href="http://www.example.com/">링크</a>`: 하이퍼링크
+   - `<code>`: 인라인 코드
+   - `<pre>`: 코드 블록
+   - `<blockquote>`: 여러 줄로 이루어진 인용문
 
-중요: 반드시 Telegram의 HTML 스타일을 사용하여 메시지를 작성해야 합니다. 다음 구문을 정확히 사용하세요:
-- <b>bold</b>, <strong>bold</strong>
-- <i>italic</i>, <em>italic</em>
-- <u>underline</u>, <ins>underline</ins>
-- <a href="http://www.example.com/">inline URL</a>
-- <code>inline fixed-width code</code>
-- <pre>pre-formatted fixed-width code block</pre>
-- <blockquote>Block quotation started\nBlock quotation continued\nThe last line of the block quotation</blockquote>
+**이모지 사용 예시**:
+- 날짜 정보에는 📅 이모지를 사용하세요.
+- 중요한 정보나 마감일에는 ⚠️ 또는 ⏰ 같은 이모지를 사용해 주의를 끌도록 하세요.
+- 링크 안내에는 🔗 이모지를 사용하여 클릭 가능하다는 것을 시각적으로 표시하세요.
+
+**예시 (이모지를 포함한 HTML 형식 사용)**:
+- 올바른 형식 예시: `<b>📅 신청 기간</b>: 2024-10-07(월) ~ 2024-10-17(목)\n<b>신청 방법</b>: 통합학사시스템에서 신청`
+- 잘못된 형식 예시: `신청 기간: 2024-10-07(월) ~ 2024-10-17(목)`
+
+**지침:**
+1. **제목 최우선**: 공지의 제목을 항상 최상단에 배치하여 학생들이 가장 먼저 확인할 수 있도록 합니다.
+2. **핵심 내용 추출**: 중요한 일정이나 마감일을 포함하여 공지의 주요 내용을 강조해 추출하세요.
+3. **이모지 적극 활용**: 각 정보 앞에 적절한 이모지를 사용하여 메시지의 가독성과 시각적 매력을 높이세요.
+4. **길이 제한**: 요약은 약 100~200자 내외로 작성하여 짧고 간결하게 유지합니다.
+5. **톤과 어조**: 친근한 어조로 작성하여 학생들에게 자연스럽게 다가갈 수 있도록 합니다.
+6. **날짜 형식**: 시간이 포함되지 않을 경우 `YYYY-MM-DD` 형식으로 작성하고, 시간이 포함될 경우 `YYYY-MM-DD HH:mm` 형식으로 작성합니다.
+
 """),
             ("human", """
 요약할 내용
 제목: {title}
 내용: {summary}
+URL: {link}
 """),
         ]
     )
@@ -45,11 +58,8 @@ def request_gpt(input_text, model="gpt-4o-mini"):
     try:
         # 체인 실행
         response = prompt | llm
-        res_text = response.invoke(input_text).content
+        return response.invoke(input_text).content
 
-        return f"""
-{res_text}
-"""
     except Exception as e:
         # 예외 처리
         return f"오류가 발생했습니다: {str(e)}"

@@ -21,9 +21,13 @@ def get_gist_content():
 def parse_gist_content(content):
     lines = content.strip().split('\n')
     data = {}
-    for line in lines:
-        key, url = line.split(',')
-        data[key] = url.strip()
+    for line in lines[1:]:
+        key, url, target = line.split(',')
+        data[key] = {
+            'url': url.strip(),
+            'target': target
+        }
+
     return data
 
 
@@ -36,13 +40,10 @@ def update_gist_content(files):
     data = {
         "files": files
     }
-    response = requests.patch(url, headers=headers,
-                              json=data)  # data를 json으로 변경
-
-    print(url)
+    response = requests.patch(url, headers=headers, json=data)
 
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error: {response.status_code}, {response.text}")  # 에러 메시지 출력
-        return None  # None으로 명시적으로 반환
+        print(f"Error: {response.status_code}, {response.text}")
+        return None

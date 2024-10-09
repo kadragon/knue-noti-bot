@@ -5,30 +5,40 @@ from src.rss import RSSFeedParser
 class Checker:
     def __init__(self) -> None:
         self.gist_data = gist.get_gist_content()
-        self.update_data = {}
 
     def update_checker(self, update_flag: bool = False) -> list:
-        new_data = []
+        parser = RSSFeedParser()
+
+        new_entries = []
+        updated_data = {}
+
+        is_data_updated = False
 
         for site_id in self.gist_data.keys():
             gist_filename = f'{site_id}.csv'
-            self.update_data[gist_filename] = {'content': ''}
+            updated_content = []
 
             recode = self.gist_data[site_id]
 
             for idx in recode.keys():
-                entries = RSSFeedParser(idx).parse_entries()
+                latest_article_url = self.gist_data[site_id][idx]['url']
+                target = self.gist_data[site_id][idx]['target']
 
-                self.update_data[gist_filename]['content'] += f'{
-                    idx},{entries[0]['link']}\n'
+                entries = parser.parse_entries(idx)
+
+                updated_content.append(f'{idx},{entries[0]['link']},{target}')
 
                 for entry in entries:
-                    if entry['link'] != recode[idx]:
-                        new_data.append(entry)
+                    if entry['link'] != latest_article_url:
+                        new_entries.append({'entry': entry, 'target': target})
+                        is_data_updated = True
                     else:
                         break
 
-        if update_flag:
-            gist.update_gist_content(self.update_data)
+            updated_data[gist_filename] = {
+                'content': f"""bbs_no,latest_article_url,notification_target\n{'\n'.join(updated_content)}"""}
 
-        return new_data
+        if update_flag and is_data_updated:
+            gist.update_gist_content(updated_data)
+
+        return new_entries

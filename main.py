@@ -9,5 +9,6 @@ if __name__ == '__main__':
     updated_data_list = Checker().update_checker(update_flag=True)
 
     for data in updated_data_list:
-        gpt_message = request_gpt(data)
-        telegramBot.send_message_to_group(gpt_message, data['link'])
+        gpt_message = request_gpt(data['entry'])
+        telegramBot.send_message(
+            gpt_message, data['entry']['link'], data['target'])
