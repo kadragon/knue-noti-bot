@@ -61,10 +61,10 @@ python main.py
 
 프로젝트는 다음 환경 변수를 필요로 합니다:
 
-- RSS_FEEDS: 모니터링할 RSS 피드 URL 목록 (쉼표로 구분)
-- GIST_ID: RSS 정보를 저장할 GitHub Gist ID
+- RECODE_GIST_ID: RSS 정보를 저장할 GitHub Gist ID
 - OPENAI_API_KEY: GPT 요약을 위한 OpenAI API 키
-- TELEGRAM_BOT_TOKEN: Telegram 봇 토큰
+- GIT_HUB_TOKEN: GITHUB action을 위한 토큰
+- TELEGRAM_API_TOKEN: Telegram 봇 토큰
 - TELEGRAM_CHAT_ID_1: 메시지를 보낼 Telegram 그룹의 채팅 ID_1
 - TELEGRAM_CHAT_ID_2: 메시지를 보낼 Telegram 그룹의 채팅 ID_2
 - TELEGRAM_CHAT_ID_3: 메시지를 보낼 Telegram 그룹의 채팅 ID_3
