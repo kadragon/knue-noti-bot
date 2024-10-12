@@ -38,10 +38,16 @@ git clone https://github.com/yourusername/knue-noti-bot.git
 cd knue-noti-bot
 ```
 
-### 2. 종속성 설치
+### 2-1. 종속성 설치
 
 ```bash
 pip install -r requirements.txt
+```
+
+### 2-2. 종속성 설치(개발 환경)
+
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
 ```
 
 ### 3. 실행

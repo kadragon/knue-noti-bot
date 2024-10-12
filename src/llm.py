@@ -1,8 +1,23 @@
+"""
+This module provides a function to request summaries from GPT using a specific prompt template.
+It interacts with the Langchain OpenAI to generate concise and informative messages.
+"""
+
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
 
 def request_gpt(input_text, model="gpt-4o-mini"):
+    """
+    Requests a summary from GPT using the given input text.
+
+    Args:
+        input_text (str): The text to be summarized.
+        model (str, optional): The model to be used for the GPT request. Defaults to 'gpt-4o-mini'.
+
+    Returns:
+        str: The summarized content or an error message if an exception occurs.
+    """
     llm = ChatOpenAI(
         model=model,
         temperature=0.1,
@@ -53,10 +68,8 @@ def request_gpt(input_text, model="gpt-4o-mini"):
     )
 
     try:
-        # 체인 실행
         response = prompt | llm
         return response.invoke(input_text).content
 
-    except Exception as e:
-        # 예외 처리
+    except ValueError as e:
         return f"오류가 발생했습니다: {str(e)}"

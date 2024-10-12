@@ -1,20 +1,52 @@
+"""
+This module provides a TelegramBot class to interact with Telegram API.
+It includes methods to initialize the bot and send messages to specific Telegram chat groups.
+"""
+
 import telebot
 from config import TELEGRAM_API_TOKEN, TELEGRAM_CHAT_ID
 
 
 class TelegramBot:
+    """
+    A class to interact with Telegram Bot API.
+    Provides methods for sending messages to a Telegram group.
+    """
+
     def __init__(self, api_token=TELEGRAM_API_TOKEN):
+        """
+        Initializes the TelegramBot with the provided API token.
+
+        Args:
+            api_token (str): The Telegram API token for the bot.
+        """
         self.api_token = api_token
         self.bot = self._initialize_bot()
 
     def _initialize_bot(self):
+        """
+        Initializes the TeleBot instance with the provided API token.
+
+        Returns:
+            telebot.TeleBot: An instance of the TeleBot class.
+
+        Raises:
+            ValueError: If the bot initialization fails.
+        """
         try:
             return telebot.TeleBot(self.api_token)
         except Exception as e:
-            raise ValueError(f"Failed to initialize Telegram bot: {e}")
+            raise ValueError(f"Failed to initialize Telegram bot: {e}") from e
 
     def send_message(self, message, link=None, target=None):
-        """Send a message to the specified Telegram group."""
+        """
+        Sends a message to the specified Telegram group.
+
+        Args:
+            message (str): The message to be sent.
+            link (str, optional): A link to be included in the message.
+            target (str, optional): The target chat IDs separated by '/'.
+        """
         if not message:
             print("메시지가 비어 있습니다.")
             return
@@ -34,6 +66,6 @@ class TelegramBot:
                     full_message,
                     parse_mode='HTML'
                 )
-        except Exception as e:
+        except ValueError as e:
             print(f"Error sending message: {e}")
             print(full_message)

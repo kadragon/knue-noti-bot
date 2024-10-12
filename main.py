@@ -1,3 +1,11 @@
+"""
+Main script 
+1. to parse RSS feeds
+2. check for new entries
+3. generate summaries using GPT
+4. send them via Telegram.
+"""
+
 from src.gist import GistManager
 from src.rss import RSSFeedParser
 from src.checker import Checker
