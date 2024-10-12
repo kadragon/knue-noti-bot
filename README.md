@@ -22,6 +22,13 @@ KNUE Noti Bot은 한국교원대학교 대표 홈페이지 및 기타 사이트�
 4. **Telegram 전송**: 요약된 공지사항을 특정 Telegram 그룹에 메시지로 전송합니다.
 5. **자동화**: GitHub Actions를 통해 평일 오전 9시부터 오후 6시까지 매 정시에 자동으로 실행됩니다.
 
+## 현황
+
+- [KNUE NOTI(학부)](https://t.me/knuenotidept)
+- [KNUE NOTI(대학원)](https://t.me/knuenotigrad)
+- [KNUE NOTI(교육대학원)](https://t.me/knuenotiedugrad)
+- [GIST](https://gist.github.com/kadragon/09b40531d20c143009eedf15b66b0950)
+
 ## 설치
 
 ### 1. 클론하기
