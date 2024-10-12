@@ -19,10 +19,10 @@ class TelegramBot:
             print("메시지가 비어 있습니다.")
             return
 
-        # <a href="{link}">🔗 [게시물 바로가기]</a>
-
         try:
-            full_message = f"""{message}
+            full_message = f"""<a href="{link}">🔗 [게시물 바로가기]</a>
+
+{message}
 
 🤖 이 요약은 AI에 의해 작성되었습니다.
 """

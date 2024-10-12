@@ -48,7 +48,6 @@ def request_gpt(input_text, model="gpt-4o-mini"):
 요약할 내용
 제목: {title}
 내용: {summary}
-URL: {link}
 """),
         ]
     )
