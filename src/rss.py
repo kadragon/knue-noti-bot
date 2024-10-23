@@ -15,7 +15,7 @@ class RSSFeedParser:
     A class to parse RSS feed entries and extract useful information.
     """
 
-    def _make_url(self, bbs_no):
+    def make_url(self, bbs_no):
         """
         Constructs the URL for the RSS feed based on the given bulletin number.
 
@@ -37,7 +37,7 @@ class RSSFeedParser:
         Returns:
             list: A list of parsed RSS entries with cleaned summaries.
         """
-        rss_url = self._make_url(bbs_no)
+        rss_url = self.make_url(bbs_no)
         feed = feedparser.parse(rss_url)
         entries_list = [self._parse_entry(entry)
                         for entry in feed.entries[:10]]

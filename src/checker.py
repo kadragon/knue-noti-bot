@@ -57,18 +57,12 @@ class Checker:
 
         for site_id, recode in self.gist_data.items():
             gist_filename = f'{site_id}.csv'
-            site_new_entries = {}
+            site_new_entries, site_new_entries_list = self.process_site_entries(
+                recode)
 
-            for idx in recode.keys():
-                latest_article_url = recode[idx]['url']
-                target = recode[idx]['target']
-                entries = self.check_new_entries(idx, latest_article_url)
-
-                if entries:
-                    site_new_entries[idx] = entries
-                    for entry in entries:
-                        new_entries.append({'entry': entry, 'target': target})
-                    is_data_updated = True
+            if site_new_entries_list:
+                new_entries.extend(site_new_entries_list)
+                is_data_updated = True
 
             updated_content = self.generate_updated_content(
                 recode, site_new_entries)
@@ -81,3 +75,21 @@ class Checker:
             self.gist_manager.update_gist_content(updated_data)
 
         return new_entries
+
+    def process_site_entries(self, recode):
+        """Process entries for a single site."""
+        site_new_entries = {}
+        site_new_entries_list = []
+
+        for idx in recode.keys():
+            latest_article_url = recode[idx]['url']
+            target = recode[idx]['target']
+            entries = self.check_new_entries(idx, latest_article_url)
+
+            if entries:
+                site_new_entries[idx] = entries
+                for entry in entries:
+                    site_new_entries_list.append(
+                        {'entry': entry, 'target': target})
+
+        return site_new_entries, site_new_entries_list
