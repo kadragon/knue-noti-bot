@@ -38,6 +38,15 @@ class TelegramBot:
         except Exception as e:
             raise ValueError(f"Failed to initialize Telegram bot: {e}") from e
 
+    def make_full_message(self, message, link):
+        """Make Message Using Template"""
+        return f"""<a href="{link}">🔗 [게시물 바로가기]</a>
+
+{message}
+
+🤖 이 요약은 AI에 의해 작성되었습니다.
+"""
+
     def send_message(self, message, link=None, target=None):
         """
         Sends a message to the specified Telegram group.
@@ -52,12 +61,7 @@ class TelegramBot:
             return
 
         try:
-            full_message = f"""<a href="{link}">🔗 [게시물 바로가기]</a>
-
-{message}
-
-🤖 이 요약은 AI에 의해 작성되었습니다.
-"""
+            full_message = self.make_full_message(message=message, link=link)
 
             for target_id in target.split("/"):
                 target_id = int(target_id)
