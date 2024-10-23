@@ -2,7 +2,7 @@ name: Schedule Python Script Execution
 
 on:
   schedule:
-    - cron: "0/30 0-9 * * 1-5" # KST 9시부터 18시까지에 해당하는 UTC 시간 0시부터 9시까지
+    - cron: "0 0,3,6,9 * * 1-5" # KST 9시, 12시, 15시, 18시에 해당하는 UTC 시간 0시부터 9시까지
 
 jobs:
   run:
