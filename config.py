@@ -1,5 +1,10 @@
-from dotenv import load_dotenv
+"""
+This module provides ENV
+"""
+
 import os
+from dotenv import load_dotenv
+
 
 # load .env
 load_dotenv()

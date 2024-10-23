@@ -26,6 +26,9 @@ if __name__ == '__main__':
     new_entries = checker.update_checker(update_flag=True)
 
     for entry in new_entries:
+        if '학점교류' in entry['entry']['title']:
+            continue
+
         gpt_message = request_gpt(entry['entry'])
         telegramBot.send_message(
             gpt_message, entry['entry']['link'], entry['target'])
