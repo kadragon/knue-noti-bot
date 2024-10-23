@@ -1,3 +1,8 @@
+"""
+This module provides a GistManager class to manage GitHub Gists.
+It includes methods to retrieve and update gist content.
+"""
+
 import requests
 from config import RECODE_GIST_ID, GIT_HUB_TOKEN
 
